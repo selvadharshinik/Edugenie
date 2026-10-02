@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduGenie — AI Powered Flagship Learning Ecosystem</title>
+    <meta name="description" content="EduGenie is your personal AI learning ecosystem powered by Google Gemini. Ask questions, get concept explanations, generate quizzes, flashcards, code explanations, mind maps, summaries, and study plans.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="app-header">
+            <div class="brand-container">
+                <button type="button" class="btn btn-secondary btn-sm btn-mobile-menu" id="btn-mobile-menu" style="display: none;" aria-label="Toggle Navigation Menu">
+                    ☰
+                </button>
+                <div class="brand-logo">✦</div>
+                <div>
+                    <h1 class="brand-name">EduGenie AI</h1>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="status-indicator">
+                    <span class="dot-online"></span>
+                    <span>Gemini 2.5 Active</span>
+                </div>
+
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-theme-toggle" aria-label="Toggle Color Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <span>Light</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="sidebar">
+            <div class="nav-group">
+                <span class="nav-label">Core Capabilities</span>
+                
+                <a href="#dashboard" class="nav-item active" data-view-target="dashboard">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#qa" class="nav-item" data-view-target="qa">
+                    <span class="nav-icon">💬</span>
+                    <span>Ask Question</span>
+                </a>
+                <a href="#explain" class="nav-item" data-view-target="explain">
+                    <span class="nav-icon">💡</span>
+                    <span>Explain Concept</span>
+                </a>
+                <a href="#quiz" class="nav-item" data-view-target="quiz">
+                    <span class="nav-icon">⚡</span>
+                    <span>Generate Quiz</span>
+                </a>
+                <a href="#flashcards" class="nav-item" data-view-target="flashcards">
+                    <span class="nav-icon">🎴</span>
+                    <span>3D Flashcards</span>
+                </a>
+                <a href="#code" class="nav-item" data-view-target="code">
+                    <span class="nav-icon">💻</span>
+                    <span>Code Explainer</span>
+                </a>
+                <a href="#mindmap" class="nav-item" data-view-target="mindmap">
+                    <span class="nav-icon">🌐</span>
+                    <span>Mind Map Graph</span>
+                </a>
+                <a href="#summarize" class="nav-item" data-view-target="summarize">
+                    <span class="nav-icon">📝</span>
+                    <span>Summarize Text</span>
+                </a>
+                <a href="#learn" class="nav-item" data-view-target="learn">
+                    <span class="nav-icon">🗺️</span>
+                    <span>Learning Path</span>
+                </a>
+                <a href="#study" class="nav-item" data-view-target="study">
+                    <span class="nav-icon">📅</span>
+                    <span>Study Schedule</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-label">Management</span>
+                <a href="#activity" class="nav-item" data-view-target="activity">
+                    <span class="nav-icon">⏱️</span>
+                    <span>Recent Activity</span>
+                </a>
+                <a href="#settings" class="nav-item" data-view-target="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>System Info</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="app-main">
+            
+            <!-- VIEW 1: DASHBOARD -->
+            <section class="view-panel active" id="view-dashboard">
+                <div class="hero-card glass-panel fade-in">
+                    <div class="hero-glow"></div>
+                    <h2 class="hero-title">Good morning, Learner 👋</h2>
+                    <p class="hero-subtitle">What would you like to master today? Ask anything or launch an AI learning tool.</p>
+
+                    <form id="hero-prompt-form" class="hero-input-box">
+                        <input type="text" id="hero-prompt-input" class="input-control" placeholder="Ask EduGenie any question... (e.g. How do transformer neural networks work?)" required>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Ask EduGenie</span> ✦
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Dashboard Widgets -->
+                <div class="dashboard-widgets-grid">
+                    <div class="glass-panel widget-card">
+                        <h4>⏱️ Pomodoro Study Timer</h4>
+                        <div class="timer-clock" id="timer-display">25:00</div>
+                        <div class="timer-controls">
+                            <button type="button" class="btn btn-primary btn-sm" id="btn-timer-start">▶ Start Study Session</button>
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn-timer-reset">🔄 Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel widget-card">
+                        <h4>📊 Mastered Flashcards</h4>
+                        <div style="font-size: 2.2rem; font-weight: 800; margin: 0.85rem 0; color: var(--success);" id="stat-mastered-count">12</div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Concepts mastered across study sessions.</p>
+                    </div>
+                </div>
+
+                <div class="view-header">
+                    <h3 class="view-title">Learning Tools</h3>
+                    <p class="view-subtitle">Select a tool to start learning.</p>
+                </div>
+
+                <div class="quick-actions-grid">
+                    <div class="quick-action-card glass-panel" data-target-view="qa">
+                        <div class="qa-card-icon">💬</div>
+                        <div class="qa-card-title">Ask Question</div>
+                        <div class="qa-card-desc">Direct contextual answers with real-world examples.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="explain">
+                        <div class="qa-card-icon">💡</div>
+                        <div class="qa-card-title">Explain Concept</div>
+                        <div class="qa-card-desc">Simplified breakdown with definitions & key points.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="quiz">
+                        <div class="qa-card-icon">⚡</div>
+                        <div class="qa-card-title">Generate Quiz</div>
+                        <div class="qa-card-desc">3 interactive MCQs with instant scoring.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="flashcards">
+                        <div class="qa-card-icon">🎴</div>
+                        <div class="qa-card-title">3D Flashcards</div>
+                        <div class="qa-card-desc">Interactive flip cards for active recall revision.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="code">
+                        <div class="qa-card-icon">💻</div>
+                        <div class="qa-card-title">Code Explainer</div>
+                        <div class="qa-card-desc">Line-by-line breakdown, Big-O complexity & refactoring.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="mindmap">
+                        <div class="qa-card-icon">🌐</div>
+                        <div class="qa-card-title">Mind Map Graph</div>
+                        <div class="qa-card-desc">Visual concept hierarchy & branch breakdown.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="summarize">
+                        <div class="qa-card-icon">📝</div>
+                        <div class="qa-card-title">Summarize Text</div>
+                        <div class="qa-card-desc">Distill long articles into quick revision notes.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="learn">
+                        <div class="qa-card-icon">🗺️</div>
+                        <div class="qa-card-title">Learning Path</div>
+                        <div class="qa-card-desc">Roadmap from Beginner to Advanced with practical resources.</div>
+                    </div>
+
+                    <div class="quick-action-card glass-panel" data-target-view="study">
+                        <div class="qa-card-icon">📅</div>
+                        <div class="qa-card-title">Study Schedule</div>
+                        <div class="qa-card-desc">Daily structured revision plan for exam prep.</div>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 1.5rem;">
+                    <h4>Recent Learning Activity</h4>
+                    <div id="recent-activity-container" style="margin-top: 1rem;">
+                        <p class="empty-state">No recent activities yet. Start learning!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 2: ASK QUESTION -->
+            <section class="view-panel" id="view-qa">
+                <div class="view-header">
+                    <h2 class="view-title">Ask EduGenie</h2>
+                    <p class="view-subtitle">What would you like to know today? Type your query below.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-qa">
+                        <div class="form-group">
+                            <label for="qa-question-input" class="form-label">Your Question</label>
+                            <textarea id="qa-question-input" class="input-control" rows="4" placeholder="e.g. Why is the sky blue? Or Explain how photosynthesis converts light to chemical energy." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-qa-submit">
+                            <span>Ask Question</span> ✦
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="qa-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ EduGenie Response</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-tts">🔊 Listen</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="qa-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: EXPLAIN CONCEPT -->
+            <section class="view-panel" id="view-explain">
+                <div class="view-header">
+                    <h2 class="view-title">Explain a Concept</h2>
+                    <p class="view-subtitle">Enter any complex topic for a clear, beginner-friendly structured breakdown.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-explain">
+                        <div class="form-group">
+                            <label for="explain-topic-input" class="form-label">Concept or Topic</label>
+                            <input type="text" id="explain-topic-input" class="input-control" placeholder="e.g. Quantum Computing, Photosynthesis, Thermodynamics, Blockchain" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-explain-submit">
+                            <span>Explain Concept</span> 💡
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="explain-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Concept Explanation</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-tts">🔊 Listen</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="explain-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 4: QUIZ GENERATOR -->
+            <section class="view-panel" id="view-quiz">
+                <div class="view-header">
+                    <h2 class="view-title">Generate Quiz</h2>
+                    <p class="view-subtitle">Enter a topic or study notes to generate exactly 3 interactive MCQs.</p>
+                </div>
+
+                <div id="quiz-input-container" class="glass-panel" style="padding: 2rem;">
+                    <form id="form-quiz">
+                        <div class="form-group">
+                            <label for="quiz-text-input" class="form-label">Topic or Study Material</label>
+                            <textarea id="quiz-text-input" class="input-control" rows="5" placeholder="Paste study text, lecture notes, or enter a topic (e.g. Mitochondria & Cellular Respiration)..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-quiz-submit">
+                            <span>Generate Quiz</span> ⚡
+                        </button>
+                    </form>
+                </div>
+
+                <div id="quiz-interactive-container" style="display: none; margin-top: 2rem;"></div>
+            </section>
+
+            <!-- VIEW 5: 3D FLASHCARDS -->
+            <section class="view-panel" id="view-flashcards">
+                <div class="view-header">
+                    <h2 class="view-title">3D Flashcard Deck Generator</h2>
+                    <p class="view-subtitle">Generate interactive 3D flip cards for active recall revision.</p>
+                </div>
+
+                <div id="flashcard-input-container" class="glass-panel" style="padding: 2rem;">
+                    <form id="form-flashcards">
+                        <div class="form-group">
+                            <label for="flashcard-topic-input" class="form-label">Study Topic or Subject</label>
+                            <input type="text" id="flashcard-topic-input" class="input-control" placeholder="e.g. Human Anatomy, Machine Learning Terms, Organic Chemistry" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="flashcard-count-input" class="form-label">Number of Flashcards (3 to 10)</label>
+                            <input type="number" id="flashcard-count-input" class="input-control" value="5" min="3" max="10">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-flashcard-submit">
+                            <span>Generate Flashcards</span> 🎴
+                        </button>
+                    </form>
+                </div>
+
+                <div id="flashcard-deck-container" style="display: none; margin-top: 2rem;"></div>
+            </section>
+
+            <!-- VIEW 6: CODE EXPLAINER -->
+            <section class="view-panel" id="view-code">
+                <div class="view-header">
+                    <h2 class="view-title">Code & Algorithm Explainer</h2>
+                    <p class="view-subtitle">Paste code to analyze logic, time/space complexity ($O(N)$), and refactoring tips.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-code">
+                        <div class="form-group">
+                            <label for="code-lang-select" class="form-label">Programming Language</label>
+                            <select id="code-lang-select" class="input-control">
+                                <option value="Python">Python</option>
+                                <option value="JavaScript">JavaScript</option>
+                                <option value="C++">C++</option>
+                                <option value="Java">Java</option>
+                                <option value="SQL">SQL</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="code-input" class="form-label">Code Snippet or Algorithm</label>
+                            <textarea id="code-input" class="input-control" rows="6" placeholder="def binary_search(arr, target): ..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-code-submit">
+                            <span>Analyze Code</span> 💻
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="code-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Code Analysis</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy Refactored Code</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="code-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 7: MIND MAP -->
+            <section class="view-panel" id="view-mindmap">
+                <div class="view-header">
+                    <h2 class="view-title">Mind Map Knowledge Graph</h2>
+                    <p class="view-subtitle">Generates a visual concept hierarchy and branch tree for any topic.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-mindmap">
+                        <div class="form-group">
+                            <label for="mindmap-topic-input" class="form-label">Central Topic</label>
+                            <input type="text" id="mindmap-topic-input" class="input-control" placeholder="e.g. Artificial Intelligence, Solar System, World History" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-mindmap-submit">
+                            <span>Generate Mind Map</span> 🌐
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="mindmap-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Mind Map Tree</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy Structure</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export JSON</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="mindmap-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 8: TEXT SUMMARIZATION -->
+            <section class="view-panel" id="view-summarize">
+                <div class="view-header">
+                    <h2 class="view-title">Summarize Text</h2>
+                    <p class="view-subtitle">Paste long educational text to get a concise summary with key revision points.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-summarize">
+                        <div class="form-group">
+                            <label for="summarize-text-input" class="form-label">Passage / Article to Summarize</label>
+                            <textarea id="summarize-text-input" class="input-control" rows="6" placeholder="Paste your article, textbook section, or research paper text here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-summarize-submit">
+                            <span>Summarize Text</span> 📝
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="summarize-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Educational Summary</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-tts">🔊 Listen</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="summarize-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 9: LEARNING PATH -->
+            <section class="view-panel" id="view-learn">
+                <div class="view-header">
+                    <h2 class="view-title">Personalized Learning Path</h2>
+                    <p class="view-subtitle">Build a structured step-by-step roadmap from Beginner to Advanced.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-learn">
+                        <div class="form-group">
+                            <label for="learn-topic-input" class="form-label">What topic do you want to learn?</label>
+                            <input type="text" id="learn-topic-input" class="input-control" placeholder="e.g. Machine Learning, Python Programming, World War II History, Calculus" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-learn-submit">
+                            <span>Build Learning Path</span> 🗺️
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="learn-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Personalized Roadmap</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy Roadmap</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="learn-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 10: STUDY SCHEDULE -->
+            <section class="view-panel" id="view-study">
+                <div class="view-header">
+                    <h2 class="view-title">Study & Exam Schedule Planner</h2>
+                    <p class="view-subtitle">Generate a daily structured revision plan leading up to your exam.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <form id="form-study-plan">
+                        <div class="form-group">
+                            <label for="study-topic-input" class="form-label">Exam / Subject Name</label>
+                            <input type="text" id="study-topic-input" class="input-control" placeholder="e.g. SAT Math, AP Biology, AWS Certified Solutions Architect" required>
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <label for="study-days-input" class="form-label">Days Available (1-30)</label>
+                                <input type="number" id="study-days-input" class="input-control" value="7" min="1" max="30">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="study-hours-input" class="form-label">Hours / Day</label>
+                                <input type="number" step="0.5" id="study-hours-input" class="input-control" value="2.0" min="0.5" max="12.0">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-study-submit">
+                            <span>Generate Study Plan</span> 📅
+                        </button>
+                    </form>
+                </div>
+
+                <div class="result-card glass-panel" id="study-result-card">
+                    <div class="result-card-header">
+                        <div class="ai-badge">✦ Daily Study Plan</div>
+                        <div class="result-card-actions">
+                            <button type="button" class="btn btn-secondary btn-sm btn-copy">📋 Copy Schedule</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-export">📥 Export .md</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-regenerate">🔄 Regenerate</button>
+                        </div>
+                    </div>
+                    <div id="study-result-body"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 11: RECENT ACTIVITY -->
+            <section class="view-panel" id="view-activity">
+                <div class="view-header">
+                    <h2 class="view-title">Recent Activity History</h2>
+                    <p class="view-subtitle">Review your previous prompts and study sessions.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <div id="activity-full-container"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 12: SYSTEM INFO & SETTINGS -->
+            <section class="view-panel" id="view-settings">
+                <div class="view-header">
+                    <h2 class="view-title">System Settings & Status</h2>
+                    <p class="view-subtitle">EduGenie architecture and connection configuration.</p>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Backend Configuration</h3>
+                    <ul style="list-style: none; line-height: 2;">
+                        <li><strong>Application Name:</strong> {{ app_name }}</li>
+                        <li><strong>Tagline:</strong> {{ tagline }}</li>
+                        <li><strong>Architecture:</strong> FastAPI + Uvicorn + Jinja2 + Google Gemini API</li>
+                        <li><strong>Active Model:</strong> gemini-2.5-flash</li>
+                        <li><strong>Security Status:</strong> API Key handled securely via server environment variables (.env).</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/quiz.js"></script>
+    <script src="/static/js/flashcard.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

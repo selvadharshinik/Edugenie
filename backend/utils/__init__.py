@@ -1,0 +1,3 @@
+"""
+EduGenie Utilities Package
+"""

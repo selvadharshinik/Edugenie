@@ -1,0 +1,3 @@
+"""
+EduGenie Pytest Test Suite
+"""
